@@ -1,4 +1,5 @@
 const launches = new Map();
+// let was used because it was used in a function
 let latestFlightNumber = 100;
 const launch = {
   flightNumber: 100,

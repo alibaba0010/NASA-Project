@@ -33,7 +33,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
       rocket,
       target,
     });
-
+    // Was set to ok 
     const success = response.ok;
     if (success) {
       getLaunches();

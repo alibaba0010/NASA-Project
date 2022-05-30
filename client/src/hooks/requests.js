@@ -17,6 +17,14 @@ async function httpGetLaunches() {
 
 async function httpSubmitLaunch(launch) {
   // TODO: Once API is ready
+  return await fetch(`${API_URL}/launches`, {
+    method: "post",
+    // The content-type in the header has to be specified
+    headers: { "Content-Type": "application/json" },
+    // It's suppose to be launch but launch is an object in useLaunches, therefore ut has to be stringified but it can be used
+    body: JSON.stringify(launch),
+  });
+
   // Submit given launch data to launch system.
 }
 

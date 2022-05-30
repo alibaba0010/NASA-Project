@@ -10,7 +10,23 @@ function httpGetAllLaunches(req, res) {
 function httpAddNewLaunches(req, res) {
   // Can only read date in json and not in js object, so it has to be modified, so launche was equated to the body so as to modify the date
   const launche = req.body;
-  launche.launchDate = new Date(launch.launchDate);
+  // Input Validation to avoid empty requests
+  if (
+    !launche.missionName ||
+    !launche.launchDate ||
+    !launche.destinationExoplanet
+  ) {
+    return res.status(400).json({
+      error: "Invalid Input when filling the field",
+    });
+  }
+  launche.launchDate = new Date(launche.launchDate);
+  //  to check the date
+  if (isNaN(launche.launchDate)) {
+    res.status(400).json({
+      error: "Invalid Launch Date",
+    });
+  }
   addNewLaunches(launche);
   return res.status(201).json(launche);
 }
