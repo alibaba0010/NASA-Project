@@ -3,13 +3,15 @@ const path = require("path");
 const fs = require("fs");
 const habitablePlanets = [];
 function isHabitatablePlanets(planet) {
-  return (
+  if (
     planet["koi_disposition"] === "CONFIRMED" &&
     planet["koi_insol"] > 0.36 &&
     planet["koi_insol"] < 1.11 &&
     planet["koi_prad"] < 1.6
-  );
+  )
+    return planet["kepler_name"];
 }
+
 //  Using Promise to solve async issues to load the data before exporting
 function loadPlanetsData() {
   return new Promise((resolve, reject) => {
@@ -42,11 +44,16 @@ function loadPlanetsData() {
 
 async function load() {
   const found = await loadPlanetsData();
+  // const loadPlanetsdata = new Map()
+  // loadPlanetsdata.set(loadPlanetsData["kepler_name"])
   console.log(found);
 }
 const loadPlanetsDataa = () => load();
+function getAllPlanets() {
+  return habitablePlanets;
+}
 module.exports = {
   loadPlanetsDataa,
 
-  planets: habitablePlanets,
+  getAllPlanets,
 };
