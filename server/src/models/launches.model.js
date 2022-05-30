@@ -3,10 +3,10 @@ const launches = new Map();
 let latestFlightNumber = 100;
 const launch = {
   flightNumber: 100,
-  missionName: "Alibaba",
-  rocketType: "Explorer IS1",
+  mission: "Alibaba",
+  rocket: "Explorer IS1",
   launchDate: new Date("September 7, 2022"), //A Good starting point when working with date
-  destinationExoplanet: "Kepler-442b",
+  target: "Kepler-442b",
   customers: ["NASA", "Ali"],
   upcoming: true,
   success: true,
@@ -14,6 +14,11 @@ const launch = {
 // .set(key, value)
 launches.set(launch.flightNumber, launch);
 // instead of launches.get(key) we expored the key(e.g 100)
+
+// To check if a launch still exists
+function existingLaunch(launchId) {
+  return launches.has(launchId);
+}
 
 // Bringing it back to model from controller
 function getAllLaunches() {
@@ -33,7 +38,14 @@ function addNewLaunches(launches) {
     })
   );
 }
+
+// Aborting Launches
+function abortLaunchbyId(launchId) {
+  return
+}
 module.exports = {
   getAllLaunches,
   addNewLaunches,
+  existingLaunch,
+  abortLaunchbyId,
 };
