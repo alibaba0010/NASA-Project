@@ -1,44 +1,52 @@
 const {
   getAllLaunches,
-  addNewLaunches,
+  scheduleNewLaunches,
   existingLaunch,
   abortLaunchbyId,
 } = require("../../models/launches.model");
 
-function httpGetAllLaunches(req, res) {
-  //  Array.from convert the map, object into an array for json to read it
-  return res.status(200).json(getAllLaunches());
+const getPagination = require("../../services/query");
+
+async function httpGetAllLaunches(req, res) {
+  const { skip, limit } = getPagination(req.query);
+  const launch = await getAllLaunches(skip, limit);
+  return res.status(200).json(launch);
 }
-function httpAddNewLaunches(req, res) {
-  // Can only read date in json and not in js object, so it has to be modified, so launche was equated to the body so as to modify the date
+
+async function httpAddNewLaunches(req, res) {
   const launche = req.body;
-  // Input Validation to avoid empty requests
   if (!launche.mission || !launche.launchDate || !launche.target) {
     return res.status(400).json({
       error: "Invalid Input when filling the field",
     });
   }
+
   launche.launchDate = new Date(launche.launchDate);
-  //  to check the date
   if (isNaN(launche.launchDate)) {
     res.status(400).json({
       error: "Invalid Launch Date",
     });
   }
-  addNewLaunches(launche);
+  await scheduleNewLaunches(launche);
   return res.status(201).json(launche);
 }
-function httpAbortLaunches(req, res) {
-  // trying to get flightNumber(id)
-  const launch = req.params.id;
-  // if launch doesn't exist
-  if (!existingLaunch(launcheId)) {
-    return res.status(400).json({
+async function httpAbortLaunches(req, res) {
+  const launchId = Number(req.params.id);
+
+  const existLaunch = await existingLaunch(launchId);
+
+  if (!existLaunch) {
+    return res.status(404).json({
       error: "Launch doesn't exist",
     });
   }
-
-  return res.status(200).json(aborted);
+  const aborted = await abortLaunchbyId(launchId);
+  if (!aborted) {
+    return res.status(400).json({
+      error: "Launch not aborted",
+    });
+  }
+  return res.status(200).json({ ok: true });
 }
 
 module.exports = {

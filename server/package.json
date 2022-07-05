@@ -1,20 +1,27 @@
 {
-  "name": "nasa-project",
+  "name": "nasa-project-api",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --detectOpenHandles",
+    "test-watch": "jest --watch",
     "watch": "nodemon src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "cluster": "pm2 start src/server.js -i max"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "dependencies": {
+    "axios": "^0.27.2",
     "cors": "^2.8.5",
     "csv-parse": "^5.0.4",
     "express": "^4.18.1",
+    "mongoose": "^6.4.0",
     "morgan": "^1.10.0"
   },
   "devDependencies": {
